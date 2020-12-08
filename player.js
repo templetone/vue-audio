@@ -19,34 +19,36 @@ var app = new Vue({
         audio: new Audio()
     },
     methods: {
-        player: function (source) {
-            this.current = source;
+        play (song) {
+          if (typeof song.src != "undefined") {
+            this.current = song;
             this.audio.src = this.current.src;
-
-            if (this.isPlaying === false) {
-                this.audio.play();
-                this.isPlaying = true;
-                console.log(this.isPlaying);
-            }
-                else {
-                    this.audio.pause();
-                    this.isPlaying = false;
-                    console.log(this.isPlaying);
-                }
+          }
+          this.audio.play();
+          
+          this.isPlaying = true;
         },
+        pause () {
+          this.audio.pause();
+          this.isPlaying = false;
+        }
       },
     template: 
         `
         <div class="container">
             <div class="row">    
                 <header class="col-12 p-2">
-                    <h1>Simple Audio audio in Vue.js</h1>
+                    <h1>Basic Audio audio in Vue.js using Html5 Audio</h1>
                 </header>
             </div>
 
             <div class="row">
                 <section class="audio col-12 p-2">
-                    <h2 class="source-title">{{ current.title }} - <span>{{ current.artist }}</span></h2>
+                    <h2 class="source-title">{{ current.title }} <span>{{ current.artist }}</span></h2>
+                    <div class="controls">
+                        <a class="play" v-if="!isPlaying" @click="play">Play</a>
+                        <a class="pause" v-else @click="pause">Pause</a>
+                    </div>
                 </section>
             </div>
 
@@ -54,7 +56,7 @@ var app = new Vue({
                 <section class="playlist col-12 p-2">
                     <h3>Audio Files</h3>
                     <ul>
-                        <li v-for="source in sources" :key="source.src" @click="player(source)" :class="(source.src == current.src) ? 'source playing' : 'source'">
+                        <li v-for="source in sources" :key="source.src" @click="play(source)" :class="(source.src == current.src) ? 'source playing' : 'source'">
                             {{ source.title }} - {{ source.artist }}
                         </li>
                     </ul>

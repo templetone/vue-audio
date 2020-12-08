@@ -1,3 +1,30 @@
 .container {
     background: yellowgreen;
 }
+
+ul li {
+    list-style-type: upper-roman;;
+}
+
+.controls {
+    display: flex;
+    justify-content: space-around;
+}
+
+.play {
+    display: flex;
+	flex-direction: column;
+	align-items:center;
+    background: white;
+    width: 80px;
+    height: 25px;
+}
+
+.pause {
+    display: flex;
+	flex-direction: column;
+	align-items:center;
+    background: red;
+    width: 80px;
+    height: 25px;
+}
