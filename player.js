@@ -19,7 +19,7 @@ var app = new Vue({
         audio: new Audio()
     },
     methods: {
-        play (song) {
+        play: function (song) {
           if (typeof song.src != "undefined") {
             this.current = song;
             this.audio.src = this.current.src;
@@ -28,33 +28,38 @@ var app = new Vue({
           
           this.isPlaying = true;
         },
-        pause () {
+        pause: function () {
           this.audio.pause();
           this.isPlaying = false;
         }
+      },
+      created () {
+        this.current.title = this.sources[this.index].title;
+        this.current.artist = this.sources[this.index].artist;
+        this.audio.src = this.sources[this.index].src;
       },
     template: 
         `
         <div class="container">
             <div class="row">    
                 <header class="col-12 p-2">
-                    <h1>Basic Audio audio in Vue.js using Html5 Audio</h1>
+                    <h1>Basic Audio Player in Vue.js using HTMLAudioElement</h1>
                 </header>
             </div>
 
             <div class="row">
                 <section class="audio col-12 p-2">
-                    <h2 class="source-title">{{ current.title }} <span>{{ current.artist }}</span></h2>
+                    <h2 class="source-title">Listening to: {{ current.title }} - <span>{{ current.artist }}</span></h2>
                     <div class="controls">
-                        <a class="play" v-if="!isPlaying" @click="play">Play</a>
-                        <a class="pause" v-else @click="pause">Pause</a>
+                        <a title="Play" class="play fa fa-play" v-if="!isPlaying" @click="play"></a>
+                        <a title="Pause" class="pause fa fa-pause" v-else @click="pause"></a>
                     </div>
                 </section>
             </div>
 
             <div class="row">
                 <section class="playlist col-12 p-2">
-                    <h3>Audio Files</h3>
+                    <h3>Can listen to:</h3>
                     <ul>
                         <li v-for="source in sources" :key="source.src" @click="play(source)" :class="(source.src == current.src) ? 'source playing' : 'source'">
                             {{ source.title }} - {{ source.artist }}

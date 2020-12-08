@@ -1,9 +1,11 @@
 .container {
     background: yellowgreen;
+    margin: 10px auto 0 auto;
 }
 
 ul li {
-    list-style-type: upper-roman;;
+    list-style-type: upper-roman;
+    cursor: pointer;
 }
 
 .controls {
@@ -11,20 +13,7 @@ ul li {
     justify-content: space-around;
 }
 
-.play {
-    display: flex;
-	flex-direction: column;
-	align-items:center;
-    background: white;
-    width: 80px;
-    height: 25px;
-}
-
+.play,
 .pause {
-    display: flex;
-	flex-direction: column;
-	align-items:center;
-    background: red;
-    width: 80px;
-    height: 25px;
+    font-size:4rem;
 }
