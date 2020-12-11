@@ -1,7 +1,7 @@
 var app = new Vue({
     el: '#app',
     data: {
-        current: {},
+        playlist: {},
         index: 0,
         isPlaying: false,
         sources: [
@@ -24,16 +24,25 @@ var app = new Vue({
             title: 'Demo: Sea Knows When',
             artist: 'Templetone',
             src: "https://www.andidroid.de/andi/gaudio/sea_knows_when.mp3"
+        },
+        {
+            title: 'Demo: 11 12',
+            artist: 'P:lot',
+            src: "https://www.andidroid.de/andi/gaudio/1112.mp3"
         }
         ],
         audio: new Audio()
     },
     methods: {
-        play: function (song) {
-            this.current = song;
-            this.audio.src = this.current.src;
+        play: function (event) {
+            //if audio ist not yet defined, find it in the playlist array
+            if (typeof event.src != "undefined") {
+                this.playlist = event;
+                this.audio.src = this.playlist.src;
+            }
+            // audio.src is defined, play the audio
             this.audio.play();
-            this.isPlaying = true;
+            this.isPlaying = true; 
         },
         pause: function () {
             this.audio.pause();
@@ -41,9 +50,12 @@ var app = new Vue({
         }
       },
       created () {
-            this.current.title = this.sources[this.index].title;
-            this.current.artist = this.sources[this.index].artist;
-            this.audio.src = this.sources[this.index].src;
+        //load first track in playlist-playlist    
+        this.playlist.title = this.sources[this.index].title;
+        this.playlist.artist = this.sources[this.index].artist;
+        //load playlist audio file
+        this.playlist = this.sources[this.index];
+        this.audio.src = this.playlist.src;
       },
     template: 
         `
@@ -56,7 +68,7 @@ var app = new Vue({
 
             <div class="row">
                 <section class="audio col-12 p-2">
-                    <h2 class="source-title">Listening to:  {{ current.artist }} - {{ current.title }}</h2>
+                    <h2 class="source-title">You are listening to:  {{ playlist.artist }} - {{ playlist.title }}</h2>
                     <div class="controls">
                         <a title="Play" class="play fa fa-play" v-if="!isPlaying" @click="play"></a>
                         <a title="Pause" class="pause fa fa-pause" v-else @click="pause"></a>
@@ -66,9 +78,9 @@ var app = new Vue({
 
             <div class="row">
                 <section class="playlist col-12 p-2">
-                    <h3>Can listen to:</h3>
+                    <h3>You can listen to:</h3>
                     <ul>
-                        <li v-for="source in sources" :key="source.src" @click="play(source)" :class="(source.src == current.src) ? 'source playing' : 'source'">
+                        <li v-for="source in sources" :key="source.src" @click="play(source)" :class="(source.src == playlist.src) ? 'source playing' : 'source'">
                             {{ source.artist }} - {{ source.title }}
                         </li>
                     </ul>
